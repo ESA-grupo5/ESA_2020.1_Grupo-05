@@ -1,8 +1,12 @@
+import 'package:Flahscard/functions/verification_functions.dart';
+import 'package:Flahscard/lists.dart';
 import '../models/tema.dart';
 
-final List<Tema> listaDeTemas = [];
-
-void adcionarTema(int id, int idMateria, String nome) {
+void adicionarTema(int id, int idMateria, String nome) {
   Tema tema = Tema(id: id, idMateria: idMateria, nome: nome);
-  listaDeTemas.add(tema);
+  if (verificarAdicionarTema(tema)) {
+    temas.add(tema);
+  } else {
+    print("ERROOOOOO!");
+  }
 }
