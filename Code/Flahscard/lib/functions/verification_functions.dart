@@ -32,3 +32,29 @@ bool verificarAdicionarTema(Tema tema) {
   }
   return false;
 }
+
+bool verificaNomeMateriaExists(String nome) {
+  return materias.where((element) => element.nome == nome).toList().length == 0;
+}
+
+bool verificaNomeAssuntoExists(String nome, int idMateria) {
+  return temas
+          .where((element) => element.idMateria == idMateria)
+          .toList()
+          .where((element) => element.nome == nome)
+          .toList()
+          .length ==
+      0;
+}
+
+bool verificaLengthNomeMateria(String nome) {
+  return nome.length > 2;
+}
+
+bool verificaNomeIsEmpty(String nome) {
+  return nome.trim().isEmpty;
+}
+
+bool verificaIsAlpha(String nome) {
+  return isAlpha(nome);
+}
