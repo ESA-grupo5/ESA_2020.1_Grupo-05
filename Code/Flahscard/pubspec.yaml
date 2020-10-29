@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   string_validator: ^0.1.4
+  flutter_keyboard_aware_dialog: ^1.0.1
 
 
 
