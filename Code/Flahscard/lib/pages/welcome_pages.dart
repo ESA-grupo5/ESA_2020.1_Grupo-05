@@ -26,10 +26,14 @@ class WelcomePagesWidget extends StatelessWidget {
               Spacer(),
               Center(
                   child: Container(
+                height: 200,
+                width: 200,
+                padding: EdgeInsets.all(32),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(70),
+                    color: Colors.white24),
                 child: Image.asset(
                   "assets/flashly-happy.png",
-                  height: 150,
-                  width: 150,
                 ),
               )),
               SizedBox(height: 16),
