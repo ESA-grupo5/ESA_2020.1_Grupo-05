@@ -1,4 +1,4 @@
-import 'package:Flahscard/pages/topics_page.dart';
+import 'package:Flahscard/pages/welcome_pages.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter/material.dart';
 
@@ -23,8 +23,8 @@ class SplashScreenWidget extends StatelessWidget {
           SplashScreen(
             seconds: 3,
             backgroundColor: Color(0xff622162),
+            navigateAfterSeconds: new WelcomePages(),
             loaderColor: Colors.transparent,
-            navigateAfterSeconds: TopicsPage(),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
