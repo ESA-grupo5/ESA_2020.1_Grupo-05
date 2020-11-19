@@ -1,3 +1,4 @@
+import 'package:Flahscard/pages/welcome_pages.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter/material.dart';
 
@@ -20,9 +21,9 @@ class SplashScreenWidget extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           SplashScreen(
-            seconds: 4,
+            seconds: 3,
             backgroundColor: Color(0xff622162),
-            navigateAfterSeconds: "",
+            navigateAfterSeconds: new WelcomePages(),
             loaderColor: Colors.transparent,
           ),
           Column(
