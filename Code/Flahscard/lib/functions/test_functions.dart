@@ -1,9 +1,9 @@
-import '../models/cartao.dart';
+import '../models/paperboard.dart';
 
 enum Status { Aprovado, Reprovado }
 
-Status realizarTeste(String resposta, Cartao cartao) {
-  if (cartao.verso == resposta) {
+Status realizarTeste(String resposta, Paperboard cartao) {
+  if (cartao.back == resposta) {
     return Status.Aprovado;
   } else {
     return Status.Reprovado;

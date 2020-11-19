@@ -1,8 +1,6 @@
-import '../models/tema.dart';
+import 'package:Flahscard/lists.dart';
+import 'package:Flahscard/models/topic.dart';
 
-final List<Tema> listaDeTemas = [];
-
-void adcionarTema(int id, int idMateria, String nome) {
-  Tema tema = Tema(id: id, idMateria: idMateria, nome: nome);
-  listaDeTemas.add(tema);
+void adicionarTema(Topic tema) {
+  temas.add(tema);
 }

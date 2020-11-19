@@ -1,13 +1,13 @@
-import '../models/cartao.dart';
+import '../models/paperboard.dart';
 
 enum Status { Aprovado, Reprovado }
 
-Status realizarTreino(String resposta, Cartao cartao) {
-  if (cartao.verso == resposta) {
+Status realizarTreino(String resposta, Paperboard cartao) {
+  if (cartao.back == resposta) {
     print("Você acertou");
     return Status.Aprovado;
   } else {
-    print("A resposta certa é " + cartao.verso);
+    print("A resposta certa é " + cartao.back);
     return Status.Reprovado;
   }
 }
