@@ -9,9 +9,7 @@ class SplashScreenPage extends StatefulWidget {
 class _SplashState extends State<SplashScreenPage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SplashScreenWidget(),
-    );
+    return SplashScreenWidget();
   }
 }
 

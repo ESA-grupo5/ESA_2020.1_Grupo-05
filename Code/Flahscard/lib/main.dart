@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-import 'package:Flahscard/lists.dart';
-import 'package:Flahscard/models/topic.dart';
-import 'package:Flahscard/widgets/AddEditCard.dart';
-import 'package:Flahscard/widgets/AddEditTopic.dart';
-=======
 import 'package:Flahscard/pages/splash_screen_pages.dart';
->>>>>>> b20329c9a78c1256ec681a79c70664bddc377ba7
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(SplashScreenPage());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,7 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.pink,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: SplashScreenPage(),
     );
   }
 }
