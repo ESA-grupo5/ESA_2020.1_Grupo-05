@@ -1,6 +1,6 @@
 import 'package:Flahscard/lists.dart';
-import 'package:Flahscard/models/tema.dart';
+import 'package:Flahscard/models/topic.dart';
 
-void adicionarTema(Tema tema) {
+void adicionarTema(Topic tema) {
   temas.add(tema);
 }

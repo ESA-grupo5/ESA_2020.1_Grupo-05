@@ -1,9 +1,8 @@
-import '../models/cartao.dart';
+import '../models/paperboard.dart';
 
-final List<Cartao> listaDeCartoes = [];
+final List<Paperboard> listaDeCartoes = [];
 
-void criarCartao(int id, int idTema, String frente, String verso) {
-  Cartao cartao = Cartao(id: id, idTema: idTema, frente: frente, verso: verso);
-  listaDeCartoes.add(cartao);
+void criarCard(int id, int idTema, String frente, String verso) {
+  Paperboard card = Paperboard(topicId: idTema, front: frente, back: verso);
+  listaDeCartoes.add(card);
 }
-
