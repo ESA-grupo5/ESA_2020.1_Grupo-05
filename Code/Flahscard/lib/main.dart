@@ -1,4 +1,9 @@
+import 'package:Flahscard/lists.dart';
+import 'package:Flahscard/models/topic.dart';
+import 'package:Flahscard/widgets/AddEditCard.dart';
+import 'package:Flahscard/widgets/AddEditTopic.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,6 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        textTheme: GoogleFonts.quicksandTextTheme(),
         primarySwatch: Colors.pink,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
