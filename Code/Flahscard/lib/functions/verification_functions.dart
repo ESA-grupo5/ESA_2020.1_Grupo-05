@@ -1,31 +1,31 @@
 import 'package:Flahscard/lists.dart';
-import 'package:Flahscard/models/materia.dart';
-import 'package:Flahscard/models/tema.dart';
+import 'package:Flahscard/models/subject.dart';
+import 'package:Flahscard/models/topic.dart';
 import 'package:string_validator/string_validator.dart';
 
-bool verificarAdicionarMateria(Materia materia) {
+bool verificarAdicionarMateria(Subject materia) {
   if (!materias.contains(materia))
     return false;
-  else if (materia.nome.length < 2) return false;
+  else if (materia.name.length < 2) return false;
   return true;
 }
 
-bool verificarAdicionarTema(Tema tema) {
+bool verificarAdicionarTema(Topic tema) {
   if (materias
-          .where((element) => element.id == tema.idMateria)
+          .where((element) => element.id == tema.subjectId)
           .toList()
           .length !=
       0) {
     if (temas
-            .where((element) => element.idMateria == tema.idMateria)
+            .where((element) => element.subjectId == tema.subjectId)
             .toList()
-            .where((element) => element.nome == tema.nome)
+            .where((element) => element.name == tema.name)
             .toList()
             .length ==
         0) {
       return true;
     }
-    if (!isAlpha(tema.nome) || tema.nome.isEmpty) {
+    if (!isAlpha(tema.name) || tema.name.isEmpty) {
       return false;
     }
     return false;
@@ -33,28 +33,28 @@ bool verificarAdicionarTema(Tema tema) {
   return false;
 }
 
-bool verificaNomeMateriaExists(String nome) {
-  return materias.where((element) => element.nome == nome).toList().length == 0;
+bool verificanameMateriaExists(String name) {
+  return materias.where((element) => element.name == name).toList().length == 0;
 }
 
-bool verificaNomeAssuntoExists(String nome, int idMateria) {
+bool verificanameTopicExists(String name, int subjectId) {
   return temas
-          .where((element) => element.idMateria == idMateria)
+          .where((element) => element.subjectId == subjectId)
           .toList()
-          .where((element) => element.nome == nome)
+          .where((element) => element.name == name)
           .toList()
           .length ==
       0;
 }
 
-bool verificaLengthNomeMateria(String nome) {
-  return nome.length > 2;
+bool verificaLengthnameMateria(String name) {
+  return name.length > 2;
 }
 
-bool verificaNomeIsEmpty(String nome) {
-  return nome.trim().isEmpty;
+bool verificanameIsEmpty(String name) {
+  return name.trim().isEmpty;
 }
 
-bool verificaIsAlpha(String nome) {
-  return isAlpha(nome);
+bool verificaIsAlpha(String name) {
+  return isAlpha(name);
 }
