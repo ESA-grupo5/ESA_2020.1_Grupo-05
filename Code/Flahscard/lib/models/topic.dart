@@ -25,7 +25,7 @@ class Topic {
     }
     map['subjectId'] = subjectId;
     map['name'] = name;
-    map['color'] = color;
+    map['color'] = color.toString();
     return map;
   }
 
