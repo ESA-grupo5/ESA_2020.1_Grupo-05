@@ -1,54 +1,58 @@
-import 'package:Flahscard/functions/theme_functions.dart';
+import 'package:Flahscard/constants.dart';
+import 'package:Flahscard/database/controllers/subjects_ctr.dart';
 import 'package:Flahscard/functions/verification_functions.dart';
-import 'package:Flahscard/lists.dart';
-import 'package:Flahscard/models/topic.dart';
-import 'package:Flahscard/variables.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:Flahscard/models/subject.dart';
+import 'package:Flahscard/style/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_aware_dialog/flutter_keyboard_aware_dialog.dart';
 
-class AddEditTopic extends StatefulWidget {
-  final Topic topic;
+class AddEditSubject extends StatefulWidget {
+  final Subject materia;
 
-  const AddEditTopic({Key key, this.topic}) : super(key: key);
+  AddEditSubject({this.materia});
+
   @override
-  _AddEditTopicState createState() => _AddEditTopicState();
+  _TaskDialogState createState() => _TaskDialogState();
 }
 
-class _AddEditTopicState extends State<AddEditTopic> {
+class _TaskDialogState extends State<AddEditSubject> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _textController = TextEditingController();
   String _name = "";
   int _idMateria = 0;
-  Color _colorTopic;
 
   @override
   void initState() {
-    super.initState();
-    if (widget.topic != null) {
-      _textController.text = widget.topic.name;
-      _name = widget.topic.name;
-      _idMateria = widget.topic.subjectId;
-    } else {
-      _colorTopic = topicColors[0];
+    if (widget.materia != null) {
+      _textController.text = widget.materia.name;
+      _name = widget.materia.name;
+      _idMateria = widget.materia.id;
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _textController.clear();
   }
 
   void _submit() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      Topic topic = Topic(
-        subjectId: _idMateria,
+      SubjectsCtr subjectsCtr = new SubjectsCtr();
+
+      Subject subject = Subject(
         name: _name,
+        userId: userIdConstant,
       );
 
-      if (widget.topic == null) {
-        adicionarTema(topic);
+      if (widget.materia == null) {
+        subjectsCtr.insertSubject(subject);
         _textController.clear();
-        idTema += 1;
       } else {
-        temas[temas.indexOf(widget.topic)] = topic;
+        subject.id = widget.materia.id;
+        subjectsCtr.updateSubject(subject);
       }
     }
   }
@@ -75,11 +79,11 @@ class _AddEditTopicState extends State<AddEditTopic> {
             Padding(
               padding: const EdgeInsets.only(left: 16, top: 16, bottom: 8),
               child: Text(
-                (widget.topic != null) ? 'Editar assunto' : 'Novo assunto',
+                (widget.materia != null) ? 'Editar matéria' : 'Nova matéria',
                 style: TextStyle(
                   color: Colors.grey[800],
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
               ),
             ),
@@ -96,13 +100,13 @@ class _AddEditTopicState extends State<AddEditTopic> {
                   onChanged: (input) => setState(() => _name = input),
                   validator: (input) {
                     if (verificanameIsEmpty(input))
-                      return 'Insira um nome para o assunto';
-                    if (!verificanameTopicExists(input, _idMateria))
-                      return 'O name do assunto já existe';
+                      return 'Insira um nome para a matéria';
+                    if (!verificanameMateriaExists(input))
+                      return 'O name da matéria já existe';
                     return null;
                   },
                   style: TextStyle(
-                    fontSize: 22.0,
+                    fontSize: 20.0,
                     color: Colors.grey[800],
                     fontWeight: FontWeight.w300,
                   ),
@@ -110,7 +114,7 @@ class _AddEditTopicState extends State<AddEditTopic> {
                     isDense: true,
                     contentPadding: EdgeInsets.symmetric(vertical: 1),
                     labelStyle: TextStyle(
-                      fontSize: 22.0,
+                      fontSize: 20.0,
                       color: Colors.grey[800],
                     ),
                     // border: InputBorder.none,
@@ -120,7 +124,7 @@ class _AddEditTopicState extends State<AddEditTopic> {
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         width: 2,
-                        color: _colorTopic,
+                        color: colorPrimary,
                       ),
                     ),
                     errorStyle: TextStyle(
@@ -128,7 +132,7 @@ class _AddEditTopicState extends State<AddEditTopic> {
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
-                    hintText: "Título do assunto",
+                    hintText: "Título da Matéria",
                     hintStyle: TextStyle(
                       color: Colors.grey,
                       fontSize: 22.0,
@@ -138,68 +142,7 @@ class _AddEditTopicState extends State<AddEditTopic> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 4, bottom: 16),
-              child: Text(
-                'Cor',
-                style: TextStyle(
-                  color: Colors.grey[800],
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                height: 45,
-                child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: topicColors.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: new InkWell(
-                        onTap: () {
-                          setState(() {
-                            _colorTopic = topicColors[index];
-                          });
-                        },
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          child: Stack(
-                            children: [
-                              Icon(
-                                EvaIcons.folder,
-                                size: 45,
-                                color: topicColors[index],
-                              ),
-                              Center(
-                                child: AnimatedContainer(
-                                  margin: EdgeInsets.only(top: 4),
-                                  duration: Duration(milliseconds: 150),
-                                  height:
-                                      topicColors[index] == _colorTopic ? 8 : 0,
-                                  width:
-                                      topicColors[index] == _colorTopic ? 8 : 0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            SizedBox(height: 8),
+            SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -211,7 +154,7 @@ class _AddEditTopicState extends State<AddEditTopic> {
                   child: Text(
                     'CANCELAR',
                     style: TextStyle(
-                      color: _colorTopic,
+                      color: colorPrimary,
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
@@ -222,17 +165,17 @@ class _AddEditTopicState extends State<AddEditTopic> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),
                   fillColor: _textController.text != ''
-                      ? _colorTopic
-                      : _colorTopic.withOpacity(0.5),
+                      ? colorPrimary
+                      : colorPrimary.withOpacity(0.5),
                   elevation: _textController.text != '' ? 2 : 0,
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _submit();
-                      Navigator.pop(context);
+                      Navigator.pop(context, true);
                     }
                   },
                   child: Text(
-                    widget.topic != null ? 'SALVAR' : 'CRIAR ASSUNTO',
+                    widget.materia != null ? 'SALVAR' : 'CRIAR MATÉRIA',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 15,
