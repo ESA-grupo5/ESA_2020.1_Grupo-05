@@ -3,7 +3,7 @@ import 'package:Flahscard/models/paperboard.dart';
 
 import 'dart:async';
 
-class TopicsCtr {
+class PaperboardsCtr {
   DatabaseHelper con = new DatabaseHelper();
 
   Future<int> insertPaperboard(Paperboard paperboard) async {

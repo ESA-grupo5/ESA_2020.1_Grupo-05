@@ -1,3 +1,4 @@
+import 'package:Flahscard/constants.dart';
 import 'package:Flahscard/database/database_helper.dart';
 import 'package:Flahscard/models/subject.dart';
 
@@ -35,8 +36,8 @@ class SubjectsCtr {
 
   Future<Subject> getSubject(int id) async {
     var dbClient = await con.db;
-    var res = await dbClient
-        .rawQuery("SELECT * FROM subjects WHERE id = '${id.toString()}'");
+    var res = await dbClient.rawQuery(
+        "SELECT * FROM subjects WHERE id = '${id.toString()}' AND userId = $userIdConstant");
 
     if (res.length > 0) {
       return new Subject.fromMap(res.first);
@@ -47,7 +48,8 @@ class SubjectsCtr {
 
   Future<List<Subject>> getAllSubjects() async {
     var dbClient = await con.db;
-    final List<Map<String, dynamic>> result = await dbClient.query('subjects');
+    final List<Map<String, dynamic>> result = await dbClient
+        .rawQuery("SELECT * FROM subjects WHERE userId = $userIdConstant");
     final List<Subject> subjects = [];
     result.forEach((subjectMap) {
       subjects.add(Subject.fromMap(subjectMap));
