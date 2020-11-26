@@ -1,4 +1,7 @@
-import 'package:Flahscard/pages/welcome_pages.dart';
+import 'package:Flahscard/constants.dart';
+import 'package:Flahscard/pages/homepage.dart';
+import 'package:Flahscard/pages/welcome_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter/material.dart';
 
@@ -8,13 +11,45 @@ class SplashScreenPage extends StatefulWidget {
 }
 
 class _SplashState extends State<SplashScreenPage> {
+  bool _isLogin = false;
+  int _userId = 0;
+
+  Future<bool> _checkLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLogin = (prefs.get('isLogin') ?? false);
+    int userId = (prefs.get('userId') ?? 0);
+
+    setState(() {
+      _isLogin = isLogin;
+      _userId = userId;
+    });
+    userIdConstant = userId;
+    return isLogin;
+  }
+
+  @override
+  void initState() {
+    _checkLogin();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SplashScreenWidget();
+    return FutureBuilder(
+      future: _checkLogin(),
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? SplashScreenWidget(isLogin: _isLogin)
+            : Material();
+      },
+    );
   }
 }
 
 class SplashScreenWidget extends StatelessWidget {
+  final bool isLogin;
+
+  const SplashScreenWidget({Key key, this.isLogin}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +58,7 @@ class SplashScreenWidget extends StatelessWidget {
           SplashScreen(
             seconds: 3,
             backgroundColor: Color(0xff622162),
-            navigateAfterSeconds: new WelcomePages(),
+            navigateAfterSeconds: !isLogin ? WelcomePage() : Homepage(),
             loaderColor: Colors.transparent,
           ),
           Column(
