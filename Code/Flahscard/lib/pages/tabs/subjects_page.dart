@@ -34,6 +34,8 @@ class _SubjectsPageState extends State<SubjectsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         toolbarHeight: 82,
         automaticallyImplyLeading: false,
@@ -53,7 +55,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
             child: FlatButton(
               height: 45,
               minWidth: 45,
-              onPressed: _ShowMateriaDialog,
+              onPressed: showMateriaDialog,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5)),
               color: Color(0xff85ADBB).withOpacity(0.25),
@@ -97,13 +99,17 @@ class _SubjectsPageState extends State<SubjectsPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SvgPicture.asset("assets/images/search_3.svg"),
+                Image.asset(
+                  "assets/images/subject_empty.png",
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.width / 2,
+                ),
                 SizedBox(height: 16),
                 Text(
-                  "Procurando por algum colega?\nDigite o nome de usuário que ele(a)\nutiliza",
+                  'Nenhuma matéria criada\nDica: Toque em "+" para adicionar.',
                   style: TextStyle(
-                    fontSize: 18,
-                    color: Color(0xff9E9E9E),
+                    fontSize: 16,
+                    color: Colors.grey,
                   ),
                   textAlign: TextAlign.center,
                 )
@@ -117,25 +123,29 @@ class _SubjectsPageState extends State<SubjectsPage> {
 
   Widget _buildButtonSubject(Subject materia) {
     TopicsCtr topicsCtr = TopicsCtr();
-    return RawMaterialButton(
-      onPressed: () {
-        Navigator.of(context).push(
+    return FlatButton(
+      onPressed: () async {
+        final result = await Navigator.of(context).push(
           CupertinoPageRoute(
             builder: (context) {
               return TopicsPage(materia: materia);
             },
           ),
         );
+
+        if (result == true) {
+          _updateSubjectsList();
+        }
       },
-      elevation: 0,
-      fillColor: colorPrimary.withOpacity(0.05),
+      padding: EdgeInsets.zero,
+      color: colorPrimary.withOpacity(0.1),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
         children: [
           Expanded(
-            flex: 6,
+            flex: 7,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -149,7 +159,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 16),
                   FutureBuilder(
                       future: topicsCtr.getAllTopics(materia.id),
                       builder: (context, assuntos) {
@@ -182,7 +192,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
     );
   }
 
-  _ShowMateriaDialog({Subject editedMateria, int index}) async {
+  showMateriaDialog({Subject editedMateria, int index}) async {
     bool result = await showDialog(
       context: context,
       barrierDismissible: false,
