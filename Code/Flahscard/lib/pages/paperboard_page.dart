@@ -2,12 +2,14 @@ import 'package:Flahscard/database/controllers/paperboards_ctr.dart';
 import 'package:Flahscard/database/controllers/topics_ctr.dart';
 import 'package:Flahscard/models/paperboard.dart';
 import 'package:Flahscard/models/topic.dart';
+import 'package:Flahscard/pages/tests_page.dart';
 import 'package:Flahscard/style/colors.dart';
 import 'package:Flahscard/widgets/buttons/MoreOptionsButton.dart';
 import 'package:Flahscard/widgets/pop-ups/AddEditCard.dart';
 import 'package:Flahscard/widgets/pop-ups/AddEditTopic.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -248,7 +250,12 @@ class _PaperboardPageState extends State<PaperboardPage> {
                               "Teste",
                               EvaIcons.fileTextOutline,
                               (cartas.data.length > 1)
-                                  ? () {}
+                                  ? () {
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              builder: (context) => TestsPage(
+                                                  listCards: cartas.data)));
+                                    }
                                   : () {
                                       Scaffold.of(context).showSnackBar(
                                           _buidSnackBar(cartas.data.length));
