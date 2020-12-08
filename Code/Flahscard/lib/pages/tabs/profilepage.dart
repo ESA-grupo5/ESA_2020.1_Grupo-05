@@ -108,12 +108,70 @@ class _ProfilepageState extends State<Profilepage> {
                       EvaIcons.logOut,
                       color: Colors.white,
                     ),
-                    onPressed: () async {
-                      await logOut().then((value) {
-                        Navigator.of(context, rootNavigator: true)
-                            .pushReplacement(CupertinoPageRoute(
-                                builder: (context) => WelcomePage()));
-                      });
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            title: Text(
+                              'Sair',
+                              style: TextStyle(
+                                color: Colors.grey[800],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            content: Text(
+                              "Tem certeza que deseja sair do Flashly?",
+                              style: TextStyle(
+                                color: Colors.grey[800],
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            ),
+                            actions: <Widget>[
+                              FlatButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text(
+                                  'CANCELAR',
+                                  style: TextStyle(
+                                    color: colorPrimary,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)),
+                                  color: colorPrimary,
+                                  onPressed: () async =>
+                                      await logOut().then((value) {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        CupertinoPageRoute(
+                                            builder: (context) =>
+                                                WelcomePage()),
+                                        (route) => false);
+                                  }),
+                                  child: Text(
+                                    'SAIR',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
