@@ -1,3 +1,4 @@
+import 'package:Flahscard/database/controllers/paperboards_ctr.dart';
 import 'package:Flahscard/database/database_helper.dart';
 import 'package:Flahscard/models/topic.dart';
 
@@ -30,6 +31,13 @@ class TopicsCtr {
       where: 'id = ?',
       whereArgs: [id],
     );
+
+    PaperboardsCtr paperboardsCtr = PaperboardsCtr();
+    paperboardsCtr.getAllPaperboards(id).then(
+          (topics) => topics.forEach(
+            (topic) => paperboardsCtr.deletePaperboard(topic.id),
+          ),
+        );
     return result;
   }
 
