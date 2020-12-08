@@ -1,10 +1,8 @@
 import 'package:Flahscard/database/controllers/topics_ctr.dart';
-import 'package:Flahscard/functions/theme_functions.dart';
 import 'package:Flahscard/functions/verification_functions.dart';
 import 'package:Flahscard/lists.dart';
 import 'package:Flahscard/models/subject.dart';
 import 'package:Flahscard/models/topic.dart';
-import 'package:Flahscard/variables.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_aware_dialog/flutter_keyboard_aware_dialog.dart';
@@ -64,6 +62,7 @@ class _AddEditTopicState extends State<AddEditTopic> {
         assunto.id = widget.assunto.id;
         topicsCtr.updateTopic(assunto);
       }
+      Navigator.pop(context, true);
     }
   }
 
@@ -93,7 +92,7 @@ class _AddEditTopicState extends State<AddEditTopic> {
                 style: TextStyle(
                   color: Colors.grey[800],
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
               ),
             ),
@@ -104,10 +103,12 @@ class _AddEditTopicState extends State<AddEditTopic> {
                 key: _formKey,
                 child: TextFormField(
                   controller: _textController,
+                  textInputAction: TextInputAction.done,
                   autofocus: true,
                   textCapitalization: TextCapitalization.sentences,
                   onSaved: (input) => _name = input,
                   onChanged: (input) => setState(() => _name = input),
+                  onFieldSubmitted: (input) => _submit(),
                   validator: (input) {
                     if (verificanameIsEmpty(input))
                       return 'Insira um nome para o assunto';
@@ -145,7 +146,7 @@ class _AddEditTopicState extends State<AddEditTopic> {
                     hintText: "Título do assunto",
                     hintStyle: TextStyle(
                       color: Colors.grey,
-                      fontSize: 22.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -167,45 +168,44 @@ class _AddEditTopicState extends State<AddEditTopic> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Container(
                 height: 45,
-                child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
+                child: GridView.builder(
+                  scrollDirection: Axis.vertical,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 5, crossAxisSpacing: 8),
                   itemCount: topicColors.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: new InkWell(
-                        onTap: () {
-                          setState(() {
-                            _colorTopic = topicColors[index];
-                          });
-                        },
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          child: Stack(
-                            children: [
-                              Icon(
-                                EvaIcons.folder,
-                                size: 45,
-                                color: topicColors[index],
-                              ),
-                              Center(
-                                child: AnimatedContainer(
-                                  margin: EdgeInsets.only(top: 4),
-                                  duration: Duration(milliseconds: 150),
-                                  height:
-                                      topicColors[index] == _colorTopic ? 8 : 0,
-                                  width:
-                                      topicColors[index] == _colorTopic ? 8 : 0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
+                    return new IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        setState(() {
+                          _colorTopic = topicColors[index];
+                        });
+                      },
+                      icon: Container(
+                        height: 45,
+                        width: 45,
+                        child: Stack(
+                          children: [
+                            Icon(
+                              EvaIcons.folder,
+                              size: 45,
+                              color: topicColors[index],
+                            ),
+                            Center(
+                              child: AnimatedContainer(
+                                margin: EdgeInsets.only(top: 4),
+                                duration: Duration(milliseconds: 150),
+                                height:
+                                    topicColors[index] == _colorTopic ? 8 : 0,
+                                width:
+                                    topicColors[index] == _colorTopic ? 8 : 0,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(50),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -213,7 +213,7 @@ class _AddEditTopicState extends State<AddEditTopic> {
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -231,20 +231,14 @@ class _AddEditTopicState extends State<AddEditTopic> {
                     ),
                   ),
                 ),
-                RawMaterialButton(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+                FlatButton(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),
-                  fillColor: _textController.text != ''
+                  color: _textController.text != ''
                       ? _colorTopic
                       : _colorTopic.withOpacity(0.5),
-                  elevation: _textController.text != '' ? 2 : 0,
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      _submit();
-                      Navigator.pop(context, true);
-                    }
-                  },
+                  onPressed: _submit,
                   child: Text(
                     widget.assunto != null ? 'SALVAR' : 'CRIAR ASSUNTO',
                     style: TextStyle(
