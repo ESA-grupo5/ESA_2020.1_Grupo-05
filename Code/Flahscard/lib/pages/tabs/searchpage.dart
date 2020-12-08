@@ -79,13 +79,17 @@ class _SearchpageState extends State<Searchpage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(imagePath),
+                Image.asset(
+                  imagePath,
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.width / 2,
+                ),
                 SizedBox(height: 16),
                 Text(
                   message,
                   style: TextStyle(
                     fontSize: 16,
-                    color: Color(0xff85ADBB),
+                    color: Colors.grey,
                   ),
                   textAlign: TextAlign.center,
                 )
@@ -108,6 +112,7 @@ class _SearchpageState extends State<Searchpage> {
       child: DefaultTabController(
         length: containers.length,
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.grey[50],
           appBar: AppBar(
             toolbarHeight: 150,
@@ -155,8 +160,10 @@ class _SearchpageState extends State<Searchpage> {
             ),
             bottom: TabBar(
               labelColor: Colors.grey[800],
-              unselectedLabelColor: Color(0xff85ADBB).withOpacity(0.5),
+              unselectedLabelColor: Colors.grey,
               indicatorColor: colorPrimary,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicatorWeight: 3,
               tabs: [
                 Tab(
                   child: Text(
@@ -187,11 +194,11 @@ class _SearchpageState extends State<Searchpage> {
           ),
           body: TabBarView(
             children: [
-              _buildPageForSearch('assets/images/search_1.svg',
+              _buildPageForSearch('assets/images/search_1.png',
                   "Digite uma matéria\nDica: quanto mais específico, melhor!"),
-              _buildPageForSearch('assets/images/search_2.svg',
+              _buildPageForSearch('assets/images/search_2.png',
                   "Digite um assunto ou tema\nDica: quanto mais específico, melhor!"),
-              _buildPageForSearch('assets/images/search_3.svg',
+              _buildPageForSearch('assets/images/search_3.png',
                   "Procurando por algum colega?\nDigite o nome de usuário que ele(a)\nutiliza."),
             ],
           ),

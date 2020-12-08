@@ -99,12 +99,14 @@ class _SignInState extends State<SignIn> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 44),
+              SizedBox(height: 32),
               Form(
                 key: _formKeyEmail,
                 child: TextFormField(
+                  autofocus: true,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
                   controller: _textControllerEmail,
-                  textCapitalization: TextCapitalization.sentences,
                   onSaved: (input) => _email = input,
                   onChanged: (input) => setState(() => _email = input),
                   validator: (input) {
@@ -113,7 +115,7 @@ class _SignInState extends State<SignIn> {
                     return null;
                   },
                   style: TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     color: Colors.grey[800],
                     fontWeight: FontWeight.w500,
                   ),
@@ -124,7 +126,7 @@ class _SignInState extends State<SignIn> {
                       size: 30,
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                     labelStyle: TextStyle(
                       fontSize: 25.0,
                       color: Colors.grey,
@@ -152,7 +154,7 @@ class _SignInState extends State<SignIn> {
                     hintText: "email@exemplo.com.br",
                     hintStyle: TextStyle(
                       color: Colors.grey,
-                      fontSize: 18.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -164,9 +166,9 @@ class _SignInState extends State<SignIn> {
                 child: TextFormField(
                   obscureText: _obscureText,
                   controller: _textControllerPassword,
-                  textCapitalization: TextCapitalization.sentences,
                   onSaved: (input) => _password = input,
                   onChanged: (input) => setState(() => _password = input),
+                  onFieldSubmitted: (input) => _submit(),
                   validator: (input) {
                     if (input.trim().length < 8)
                       return 'A senha deve ter no mínimo 8 caracteres';
@@ -175,7 +177,7 @@ class _SignInState extends State<SignIn> {
                     return null;
                   },
                   style: TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     color: Colors.grey[800],
                     fontWeight: FontWeight.w500,
                   ),
@@ -191,7 +193,7 @@ class _SignInState extends State<SignIn> {
                       EvaIcons.lockOutline,
                       size: 30,
                     ),
-                    contentPadding: EdgeInsets.all(8),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8),
                     labelStyle: TextStyle(
                       fontSize: 25.0,
                       color: Colors.grey,
@@ -216,16 +218,16 @@ class _SignInState extends State<SignIn> {
                     ),
                     errorStyle: TextStyle(fontSize: 14, color: Colors.red),
                     errorMaxLines: 2,
-                    hintText: 'Senha',
+                    hintText: 'Senha de 8 dígitos',
                     hintStyle: TextStyle(
                       color: Colors.grey,
-                      fontSize: 18.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 55),
+              SizedBox(height: 32),
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 55,

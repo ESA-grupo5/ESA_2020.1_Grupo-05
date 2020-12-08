@@ -23,6 +23,7 @@ class _WelcomePageWidgetState extends State<WelcomePageWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xff622162),
       body: Stack(
         children: <Widget>[
@@ -41,7 +42,7 @@ class _WelcomePageWidgetState extends State<WelcomePageWidget> {
                     color: Colors.white24,
                   ),
                   child: Image.asset(
-                    "assets/flashly-happy.png",
+                    "assets/flashly-smile.png",
                   ),
                 ),
               ),
@@ -60,6 +61,7 @@ class _WelcomePageWidgetState extends State<WelcomePageWidget> {
                 style: TextStyle(
                   color: Colors.white54,
                   fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               Spacer(),
@@ -77,7 +79,7 @@ class _WelcomePageWidgetState extends State<WelcomePageWidget> {
                     child: Text(
                       "Inscreva-se de graça",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
@@ -90,7 +92,10 @@ class _WelcomePageWidgetState extends State<WelcomePageWidget> {
                 onPressed: () => _buildBottomSheet(false),
                 child: Text(
                   "Ou Inicie a sua sessão",
-                  style: (TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               SizedBox(height: 16),

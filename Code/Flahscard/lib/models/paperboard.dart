@@ -21,7 +21,7 @@ class Paperboard {
     if (id != null) {
       map['id'] = id;
     }
-    map['userId'] = topicId;
+    map['topicId'] = topicId;
     map['front'] = front;
     map['back'] = back;
 
