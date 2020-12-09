@@ -81,9 +81,6 @@ class _TestsPageState extends State<TestsPage> {
         });
       }
     });
-    listCardsAlternatives.forEach((element) {
-      print(element.front);
-    });
   }
 
   void getNextQuestion(Paperboard carta) {
@@ -137,13 +134,15 @@ class _TestsPageState extends State<TestsPage> {
           children: [
             Spacer(),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: Text(
                 card.back,
                 style: TextStyle(
                   color: Colors.grey[800],
                   fontSize: 18,
                 ),
+                maxLines: 10,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             Spacer(),
@@ -157,7 +156,7 @@ class _TestsPageState extends State<TestsPage> {
                 if (indexButton == indexCorrectAlternative)
                   return _buidAlternativeButton(card);
                 return _buidAlternativeButton(
-                    listCardsAlternatives[indexButton]);
+                    listCardsAlternatives.removeLast());
               },
             )
           ],
