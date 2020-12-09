@@ -252,9 +252,13 @@ class _PaperboardPageState extends State<PaperboardPage> {
                               (cartas.data.length > 1)
                                   ? () {
                                       Navigator.of(context).push(
-                                          CupertinoPageRoute(
-                                              builder: (context) => TestsPage(
-                                                  listCards: cartas.data)));
+                                        CupertinoPageRoute(
+                                          builder: (context) => TestsPage(
+                                            listCards: cartas.data,
+                                            color: _assunto.color,
+                                          ),
+                                        ),
+                                      );
                                     }
                                   : () {
                                       Scaffold.of(context).showSnackBar(
