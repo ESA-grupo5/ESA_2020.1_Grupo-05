@@ -38,6 +38,7 @@ dependencies:
   flutter_svg: ^0.19.1
   flip_card: ^0.4.4
   percent_indicator: ^2.1.8
+  flutter_tindercard: ^0.2.0
   #Database dependencies
   path_provider: ^1.6.24
   shared_preferences: ^0.5.12+4
