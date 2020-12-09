@@ -152,11 +152,17 @@ class _TestsPageState extends State<TestsPage> {
               shrinkWrap: true,
               itemCount: 4,
               itemBuilder: (context, indexButton) {
-                if (indexButton > listCards.length - 1) return Container();
-                if (indexButton == indexCorrectAlternative)
-                  return _buidAlternativeButton(card);
-                return _buidAlternativeButton(
-                    listCardsAlternatives.removeLast());
+                if ((indexCard + 1) <= listCards.length) {
+                  if (indexButton > listCards.length - 1) return Container();
+                  if (indexButton == indexCorrectAlternative)
+                    return _buidAlternativeButton(card);
+                  return _buidAlternativeButton(
+                      (listCardsAlternatives.length > 0)
+                          ? listCardsAlternatives.removeLast()
+                          : card);
+                } else {
+                  return Container();
+                }
               },
             )
           ],
