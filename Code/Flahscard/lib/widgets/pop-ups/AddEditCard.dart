@@ -1,5 +1,4 @@
 import 'package:Flahscard/database/controllers/paperboards_ctr.dart';
-import 'package:Flahscard/lists.dart';
 import 'package:Flahscard/models/topic.dart';
 import 'package:flutter/material.dart';
 import 'package:Flahscard/models/paperboard.dart';
@@ -27,6 +26,7 @@ class _AddEditCardState extends State<AddEditCard> {
   String _back = "";
   int _idTopic = 0;
   Color _colorTopic;
+  int _alreadyLearned = 0;
 
   @override
   void initState() {
@@ -34,6 +34,7 @@ class _AddEditCardState extends State<AddEditCard> {
     if (widget.card != null) {
       _front = widget.card.front;
       _back = widget.card.back;
+      _alreadyLearned = widget.card.alreadyLearned;
       _textControllerFront.text = widget.card.front;
       _textControllerBack.text = widget.card.back;
       _idTopic = widget.card.topicId;
@@ -55,6 +56,7 @@ class _AddEditCardState extends State<AddEditCard> {
         topicId: _idTopic,
         front: _front,
         back: _back,
+        alreadyLearned: _alreadyLearned,
       );
 
       if (widget.card == null) {
