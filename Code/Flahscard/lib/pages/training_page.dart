@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:Flahscard/pages/result_training_page.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:Flahscard/models/paperboard.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -111,7 +113,10 @@ class _TrainingPageState extends State<TrainingPage> {
                           print(cardFlips);
 
                           if (cardFlips.every((t) => t == false)) {
-                            print("Won");
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(CupertinoPageRoute(
+                                builder: (context) => ResultTrainingPage(
+                                    seconds: time, topicColor: widget.color)));
                           }
                         }
                       }
