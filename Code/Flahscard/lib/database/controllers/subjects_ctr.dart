@@ -57,6 +57,18 @@ class SubjectsCtr {
     return null;
   }
 
+  Future<List<Subject>> getAllSubjectsByName(String name) async {
+    var dbClient = await con.db;
+    final List<Map<String, dynamic>> result = await dbClient
+        .rawQuery("SELECT * FROM subjects WHERE name LIKE '%$name%'");
+    final List<Subject> subjects = [];
+    result.forEach((subjectMap) {
+      subjects.add(Subject.fromMap(subjectMap));
+    });
+
+    return subjects;
+  }
+
   Future<List<Subject>> getAllSubjects() async {
     var dbClient = await con.db;
     final List<Map<String, dynamic>> result = await dbClient

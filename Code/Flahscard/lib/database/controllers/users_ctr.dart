@@ -56,9 +56,22 @@ class LoginCtr {
     return null;
   }
 
-  Future<List<User>> getAllUser() async {
+  Future<User> getUserByName(String name) async {
     var dbClient = await con.db;
-    final List<Map<String, dynamic>> result = await dbClient.query('users');
+    var res =
+        await dbClient.rawQuery("SELECT * FROM users WHERE name = '$name'");
+
+    if (res.length > 0) {
+      return new User.fromMap(res.first);
+    }
+
+    return null;
+  }
+
+  Future<List<User>> getAllUserByName(String name) async {
+    var dbClient = await con.db;
+    final List<Map<String, dynamic>> result = await dbClient
+        .rawQuery("SELECT * FROM users WHERE name LIKE '%$name%'");
     final List<User> users = [];
     result.forEach((userMap) {
       users.add(User.fromMap(userMap));

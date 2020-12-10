@@ -63,4 +63,16 @@ class TopicsCtr {
 
     return topics;
   }
+
+  Future<List<Topic>> getAllTopicsByName(String name) async {
+    var dbClient = await con.db;
+    final List<Map<String, dynamic>> result = await dbClient
+        .rawQuery("SELECT * FROM topics WHERE name LIKE '%$name%'");
+    final List<Topic> topics = [];
+    result.forEach((topicMap) {
+      topics.add(Topic.fromMap(topicMap));
+    });
+
+    return topics;
+  }
 }
