@@ -1,3 +1,4 @@
+import 'package:Flahscard/database/controllers/paperboards_ctr.dart';
 import 'package:Flahscard/models/topic.dart';
 import 'package:flutter/material.dart';
 import 'package:Flahscard/models/paperboard.dart';
@@ -6,8 +7,10 @@ import 'package:flutter_keyboard_aware_dialog/flutter_keyboard_aware_dialog.dart
 class AddEditCard extends StatefulWidget {
   final Paperboard card;
   final Topic topic;
+  final Color color;
 
-  const AddEditCard({Key key, this.card, this.topic}) : super(key: key);
+  const AddEditCard({Key key, this.card, this.topic, this.color})
+      : super(key: key);
   @override
   _AddEditCardState createState() => _AddEditCardState();
 }
@@ -23,6 +26,7 @@ class _AddEditCardState extends State<AddEditCard> {
   String _back = "";
   int _idTopic = 0;
   Color _colorTopic;
+  int _alreadyLearned = 0;
 
   @override
   void initState() {
@@ -30,10 +34,40 @@ class _AddEditCardState extends State<AddEditCard> {
     if (widget.card != null) {
       _front = widget.card.front;
       _back = widget.card.back;
+      _alreadyLearned = widget.card.alreadyLearned;
+      _textControllerFront.text = widget.card.front;
+      _textControllerBack.text = widget.card.back;
       _idTopic = widget.card.topicId;
     } else {
       _idTopic = widget.topic.id;
-      _colorTopic = widget.topic.color;
+    }
+    _colorTopic = widget.color;
+  }
+
+  void _submit() {
+    if (_formKeyFront.currentState.validate() &&
+        _formKeyBack.currentState.validate()) {
+      _formKeyFront.currentState.save();
+      _formKeyBack.currentState.save();
+
+      PaperboardsCtr paperboardsCtr = PaperboardsCtr();
+
+      Paperboard card = Paperboard(
+        topicId: _idTopic,
+        front: _front,
+        back: _back,
+        alreadyLearned: _alreadyLearned,
+      );
+
+      if (widget.card == null) {
+        paperboardsCtr.insertPaperboard(card);
+        _textControllerFront.clear();
+        _textControllerBack.clear();
+      } else {
+        card.id = widget.card.id;
+        paperboardsCtr.updatePaperboard(card);
+      }
+      Navigator.pop(context, true);
     }
   }
 
@@ -63,7 +97,7 @@ class _AddEditCardState extends State<AddEditCard> {
                 style: TextStyle(
                   color: Colors.grey[800],
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
               ),
             ),
@@ -73,6 +107,7 @@ class _AddEditCardState extends State<AddEditCard> {
               child: Form(
                 key: _formKeyFront,
                 child: TextFormField(
+                  textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: _textControllerFront,
@@ -85,7 +120,7 @@ class _AddEditCardState extends State<AddEditCard> {
                     return null;
                   },
                   style: TextStyle(
-                    fontSize: 22.0,
+                    fontSize: 20.0,
                     color: Colors.grey[800],
                     fontWeight: FontWeight.w300,
                   ),
@@ -121,7 +156,7 @@ class _AddEditCardState extends State<AddEditCard> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 4, bottom: 0),
+              padding: const EdgeInsets.only(left: 16.0, top: 4, bottom: 4),
               child: Text(
                 'TERMO',
                 style: TextStyle(
@@ -137,19 +172,21 @@ class _AddEditCardState extends State<AddEditCard> {
               child: Form(
                 key: _formKeyBack,
                 child: TextFormField(
+                  textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: _textControllerBack,
                   autofocus: true,
                   textCapitalization: TextCapitalization.sentences,
-                  onSaved: (input) => _front = input,
-                  onChanged: (input) => setState(() => _front = input),
+                  onSaved: (input) => _back = input,
+                  onChanged: (input) => setState(() => _back = input),
+                  onFieldSubmitted: (input) => _submit(),
                   validator: (input) {
                     if (input.trim().isEmpty) return 'Insira uma descrição';
                     return null;
                   },
                   style: TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 20.0,
                     color: Colors.grey[800],
                     fontWeight: FontWeight.w300,
                   ),
@@ -185,7 +222,7 @@ class _AddEditCardState extends State<AddEditCard> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 4, bottom: 0),
+              padding: const EdgeInsets.only(left: 16.0, top: 4, bottom: 4),
               child: Text(
                 'DESCRIÇÃO',
                 style: TextStyle(
@@ -225,12 +262,7 @@ class _AddEditCardState extends State<AddEditCard> {
                           _textControllerFront.text != '')
                       ? 2
                       : 0,
-                  onPressed: () {
-                    if (_formKeyFront.currentState.validate() &&
-                        _formKeyBack.currentState.validate()) {
-                      Navigator.pop(context);
-                    }
-                  },
+                  onPressed: _submit,
                   child: Text(
                     widget.card != null ? 'SALVAR' : 'CRIAR CARTA',
                     style: TextStyle(

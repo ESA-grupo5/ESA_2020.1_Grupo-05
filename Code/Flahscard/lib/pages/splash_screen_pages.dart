@@ -2,8 +2,8 @@ import 'package:Flahscard/constants.dart';
 import 'package:Flahscard/pages/homepage.dart';
 import 'package:Flahscard/pages/welcome_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 class SplashScreenPage extends StatefulWidget {
   @override
@@ -69,9 +69,9 @@ class SplashScreenWidget extends StatelessWidget {
               Center(
                   child: Container(
                 child: Image.asset(
-                  "assets/flashly-happy.png",
-                  height: 150,
-                  width: 150,
+                  "assets/flashly-smile.png",
+                  height: 125,
+                  width: 125,
                 ),
               )),
               Spacer(),

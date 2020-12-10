@@ -7,6 +7,7 @@ import 'package:Flahscard/style/colors.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Profilepage extends StatefulWidget {
   @override
@@ -91,7 +92,7 @@ class _ProfilepageState extends State<Profilepage> {
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                     ),
-                  )
+                  ),
                 ],
               ),
               Container(
@@ -108,12 +109,70 @@ class _ProfilepageState extends State<Profilepage> {
                       EvaIcons.logOut,
                       color: Colors.white,
                     ),
-                    onPressed: () async {
-                      await logOut().then((value) {
-                        Navigator.of(context, rootNavigator: true)
-                            .pushReplacement(CupertinoPageRoute(
-                                builder: (context) => WelcomePage()));
-                      });
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            title: Text(
+                              'Sair',
+                              style: TextStyle(
+                                color: Colors.grey[800],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            content: Text(
+                              "Tem certeza que deseja sair do Flashly?",
+                              style: TextStyle(
+                                color: Colors.grey[800],
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            ),
+                            actions: <Widget>[
+                              FlatButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text(
+                                  'CANCELAR',
+                                  style: TextStyle(
+                                    color: colorPrimary,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)),
+                                  color: colorPrimary,
+                                  onPressed: () async =>
+                                      await logOut().then((value) {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        CupertinoPageRoute(
+                                            builder: (context) =>
+                                                WelcomePage()),
+                                        (route) => false);
+                                  }),
+                                  child: Text(
+                                    'SAIR',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
@@ -121,7 +180,103 @@ class _ProfilepageState extends State<Profilepage> {
               SizedBox(width: 8),
             ],
           ),
-        )
+        ),
+        Center(
+          child: Container(
+            width: 343,
+            height: 125,
+            margin: EdgeInsets.all(20),
+            padding: EdgeInsets.all(10),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: 10, color: Colors.black26, offset: Offset(1, 3))
+              ],
+            ),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    '0\nMatérias\ncriadas',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.quicksand().copyWith(
+                      color: Colors.grey[800],
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    '0\nAssuntos\ncriados',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.quicksand().copyWith(
+                      color: Colors.grey[800],
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    '0\nCartões\ncriados',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.quicksand().copyWith(
+                      color: Colors.grey[800],
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        DefaultTabController(
+          length: 3,
+          child: Container(
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: TabBar(
+                tabs: [
+                  Tab(
+                    child: Text(
+                      "Matérias",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.quicksand().copyWith(
+                        color: Colors.grey[800],
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      "Assuntos",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.quicksand().copyWith(
+                        color: Colors.grey[800],
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      "Cartões",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.quicksand().copyWith(
+                        color: Colors.grey[800],
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     ));
   }

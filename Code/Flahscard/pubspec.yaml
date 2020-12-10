@@ -21,8 +21,11 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_swiper: ^1.1.6
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter 
   #BottomNavBar
   persistent_bottom_nav_bar: ^2.1.0
   #Pop-ups
@@ -33,6 +36,9 @@ dependencies:
   google_fonts: ^1.1.1
   splashscreen: ^1.2.0
   flutter_svg: ^0.19.1
+  flip_card: ^0.4.4
+  percent_indicator: ^2.1.8
+  flutter_tindercard: ^0.2.0
   #Database dependencies
   path_provider: ^1.6.24
   shared_preferences: ^0.5.12+4
@@ -40,7 +46,9 @@ dependencies:
   #Validators
   string_validator: ^0.1.4
   email_validator: ^1.0.6
-  
+  #Configurations
+  flutter_launcher_icons: ^0.8.1
+  flutter_launcher_name: ^0.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -49,6 +57,15 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/flashly-smile.png"
+
+flutter_launcher_name:
+  name: "Flashly"
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

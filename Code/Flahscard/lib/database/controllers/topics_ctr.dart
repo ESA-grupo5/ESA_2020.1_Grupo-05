@@ -1,3 +1,4 @@
+import 'package:Flahscard/database/controllers/paperboards_ctr.dart';
 import 'package:Flahscard/database/database_helper.dart';
 import 'package:Flahscard/models/topic.dart';
 
@@ -30,6 +31,13 @@ class TopicsCtr {
       where: 'id = ?',
       whereArgs: [id],
     );
+
+    PaperboardsCtr paperboardsCtr = PaperboardsCtr();
+    paperboardsCtr.getAllPaperboards(id).then(
+          (topics) => topics.forEach(
+            (topic) => paperboardsCtr.deletePaperboard(topic.id),
+          ),
+        );
     return result;
   }
 
@@ -48,6 +56,18 @@ class TopicsCtr {
     var dbClient = await con.db;
     final List<Map<String, dynamic>> result = await dbClient
         .rawQuery("SELECT * FROM topics WHERE subjectId = $subjectId");
+    final List<Topic> topics = [];
+    result.forEach((topicMap) {
+      topics.add(Topic.fromMap(topicMap));
+    });
+
+    return topics;
+  }
+
+  Future<List<Topic>> getAllTopicsByName(String name) async {
+    var dbClient = await con.db;
+    final List<Map<String, dynamic>> result = await dbClient
+        .rawQuery("SELECT * FROM topics WHERE name LIKE '%$name%'");
     final List<Topic> topics = [];
     result.forEach((topicMap) {
       topics.add(Topic.fromMap(topicMap));

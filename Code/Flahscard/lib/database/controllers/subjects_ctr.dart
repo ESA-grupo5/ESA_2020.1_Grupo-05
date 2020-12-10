@@ -1,8 +1,11 @@
 import 'package:Flahscard/constants.dart';
+import 'package:Flahscard/database/controllers/topics_ctr.dart';
 import 'package:Flahscard/database/database_helper.dart';
 import 'package:Flahscard/models/subject.dart';
 
 import 'dart:async';
+
+import 'package:Flahscard/models/topic.dart';
 
 class SubjectsCtr {
   DatabaseHelper con = new DatabaseHelper();
@@ -31,6 +34,14 @@ class SubjectsCtr {
       where: 'id = ?',
       whereArgs: [id],
     );
+
+    TopicsCtr topicsCtr = TopicsCtr();
+    topicsCtr.getAllTopics(id).then(
+          (topics) => topics.forEach(
+            (topic) => topicsCtr.deleteTopic(topic.id),
+          ),
+        );
+
     return result;
   }
 
@@ -44,6 +55,18 @@ class SubjectsCtr {
     }
 
     return null;
+  }
+
+  Future<List<Subject>> getAllSubjectsByName(String name) async {
+    var dbClient = await con.db;
+    final List<Map<String, dynamic>> result = await dbClient
+        .rawQuery("SELECT * FROM subjects WHERE name LIKE '%$name%'");
+    final List<Subject> subjects = [];
+    result.forEach((subjectMap) {
+      subjects.add(Subject.fromMap(subjectMap));
+    });
+
+    return subjects;
   }
 
   Future<List<Subject>> getAllSubjects() async {

@@ -54,6 +54,7 @@ class _TaskDialogState extends State<AddEditSubject> {
         subject.id = widget.materia.id;
         subjectsCtr.updateSubject(subject);
       }
+      Navigator.pop(context, true);
     }
   }
 
@@ -93,11 +94,13 @@ class _TaskDialogState extends State<AddEditSubject> {
               child: Form(
                 key: _formKey,
                 child: TextFormField(
+                  textInputAction: TextInputAction.done,
                   controller: _textController,
                   autofocus: true,
                   textCapitalization: TextCapitalization.sentences,
                   onSaved: (input) => _name = input,
                   onChanged: (input) => setState(() => _name = input),
+                  onFieldSubmitted: (input) => _submit(),
                   validator: (input) {
                     if (verificanameIsEmpty(input))
                       return 'Insira um nome para a matéria';
@@ -160,20 +163,14 @@ class _TaskDialogState extends State<AddEditSubject> {
                     ),
                   ),
                 ),
-                RawMaterialButton(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+                FlatButton(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),
-                  fillColor: _textController.text != ''
+                  color: _textController.text != ''
                       ? colorPrimary
                       : colorPrimary.withOpacity(0.5),
-                  elevation: _textController.text != '' ? 2 : 0,
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      _submit();
-                      Navigator.pop(context, true);
-                    }
-                  },
+                  onPressed: _submit,
                   child: Text(
                     widget.materia != null ? 'SALVAR' : 'CRIAR MATÉRIA',
                     style: TextStyle(
