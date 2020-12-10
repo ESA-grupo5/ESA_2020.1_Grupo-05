@@ -19,7 +19,8 @@ class SeparetedPaperboardsPage extends StatefulWidget {
       _SeparetedPaperboardsPageState();
 }
 
-class _SeparetedPaperboardsPageState extends State<SeparetedPaperboardsPage> {
+class _SeparetedPaperboardsPageState extends State<SeparetedPaperboardsPage>
+    with TickerProviderStateMixin {
   int indexCardAtual = 0, countLearned = 0, countStudy = 0;
   List<Paperboard> listCards;
   List<Paperboard> listCardsToLearn = List<Paperboard>();
