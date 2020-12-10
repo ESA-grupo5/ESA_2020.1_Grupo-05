@@ -27,70 +27,30 @@ class _TrainingPageState extends State<TrainingPage> {
     });
   }
 
-  List<bool> cardsFlips;
-  List<Paperboard> listCards;
-  int indexCard, indexCorrectAlternative;
-  Paperboard card;
+  List<bool> cardFlips = List<bool>();
+  List<Paperboard> listCards = List<Paperboard>();
+  List<String> data = List<String>();
+  List<GlobalKey<FlipCardState>> cardStateKeys = [];
+  int previousIndex = -1;
+  bool flip = false;
+
   var index = new Random();
   @override
   void initState() {
     super.initState();
     listCards = widget.listCards;
-    indexCard = 0;
-    indexCorrectAlternative = 0;
-    card = new Paperboard();
-    initCardsFlips();
-    questionsShuffle();
-    getCards();
+    for (var i = 0; i < listCards.length * 2; i++) {
+      cardStateKeys.add(GlobalKey<FlipCardState>());
+      cardFlips.add(true);
+    }
+    for (var i = 0; i < listCards.length; i++) {
+      data.add(listCards[i].front);
+    }
+    for (var i = 0; i < listCards.length; i++) {
+      data.add(listCards[i].back);
+    }
+    data.shuffle();
     startTimer();
-  }
-
-  void initCardsFlips() {
-    for (int i = 0; i < listCards.length; i++) {
-      this.cardsFlips.add(true);
-    }
-  }
-
-  void buttonAlternativeCorrectRandom() {
-    switch (listCards.length) {
-      case 2:
-        setState(() {
-          indexCorrectAlternative = index.nextInt(2);
-        });
-
-        break;
-      case 3:
-        setState(() {
-          indexCorrectAlternative = index.nextInt(3);
-        });
-        break;
-
-      default:
-        setState(() {
-          indexCorrectAlternative = index.nextInt(4);
-        });
-    }
-  }
-
-  void questionsShuffle() {
-    setState(() {
-      listCards.shuffle();
-    });
-  }
-
-  void getCards() {
-    setState(() {
-      card = listCards[indexCard];
-    });
-  }
-
-  void getNextQuestion() {
-    setState(() {
-      indexCard += 1;
-    });
-
-    getCards();
-    buttonAlternativeCorrectRandom();
   }
 
   @override
@@ -120,16 +80,52 @@ class _TrainingPageState extends State<TrainingPage> {
                   crossAxisCount: 3,
                 ),
                 itemBuilder: (context, index) => FlipCard(
-                  onFlip: () {},
+                  key: cardStateKeys[index],
+                  onFlip: () {
+                    if (!flip) {
+                      flip = true;
+                      previousIndex = index;
+                    } else {
+                      flip = false;
+                      if (previousIndex != index) {
+                        Paperboard carta1 = Paperboard(
+                            front: data[previousIndex], back: data[index]);
+                        Paperboard carta2 = Paperboard(
+                            front: data[index], back: data[previousIndex]);
+                        if (listCards
+                                .where((element) =>
+                                    ((element.front == carta1.front &&
+                                            element.back == carta1.back) ||
+                                        (element.front == carta2.front &&
+                                            element.back == carta2.back)))
+                                .toList()
+                                .length ==
+                            0) {
+                          cardStateKeys[previousIndex]
+                              .currentState
+                              .toggleCard();
+                          previousIndex = index;
+                        } else {
+                          cardFlips[previousIndex] = false;
+                          cardFlips[index] = false;
+                          print(cardFlips);
+
+                          if (cardFlips.every((t) => t == false)) {
+                            print("Won");
+                          }
+                        }
+                      }
+                    }
+                  },
                   direction: FlipDirection.HORIZONTAL,
-                  flipOnTouch: true,
-                  front: Container(
+                  flipOnTouch: cardFlips[index],
+                  back: Container(
                       height: 200,
                       margin: EdgeInsets.all(6.0),
                       padding: EdgeInsets.fromLTRB(6.0, 50.0, 6.0, 50.0),
                       color: Colors.deepOrange.withOpacity(0.3),
-                      child: Center(child: Text(listCards[index].front))),
-                  back: Container(
+                      child: Center(child: Text(data[index]))),
+                  front: Container(
                     height: 200,
                     margin: EdgeInsets.all(6.0),
                     padding: EdgeInsets.fromLTRB(6.0, 30.0, 6.0, 30.0),
@@ -143,7 +139,7 @@ class _TrainingPageState extends State<TrainingPage> {
                     ),
                   ),
                 ),
-                itemCount: listCards.length,
+                itemCount: data.length,
               )
             ],
           ),
