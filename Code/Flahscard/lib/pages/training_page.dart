@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flip_card/flip_card.dart';
 
 import 'package:Flahscard/models/paperboard.dart';
+import 'package:Flahscard/models/paperboardsingle.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,10 +28,10 @@ class _TrainingPageState extends State<TrainingPage> {
     });
   }
 
-  List<bool> cardsFlips;
   List<Paperboard> listCards;
   int indexCard, indexCorrectAlternative;
   Paperboard card;
+  List<PaperboardSingle> cardsMemoryGame;
   var index = new Random();
   @override
   void initState() {
@@ -39,6 +40,7 @@ class _TrainingPageState extends State<TrainingPage> {
     indexCard = 0;
     indexCorrectAlternative = 0;
     card = new Paperboard();
+    cardsMemoryGame = new List();
     initCardsFlips();
     questionsShuffle();
     getCards();
@@ -47,7 +49,12 @@ class _TrainingPageState extends State<TrainingPage> {
 
   void initCardsFlips() {
     for (int i = 0; i < listCards.length; i++) {
-      this.cardsFlips.add(true);
+      this
+          .cardsMemoryGame
+          .add(new PaperboardSingle(id: i, termo: listCards[i].front));
+      this
+          .cardsMemoryGame
+          .add(new PaperboardSingle(id: i, termo: listCards[i].back));
     }
   }
 
@@ -124,11 +131,14 @@ class _TrainingPageState extends State<TrainingPage> {
                   direction: FlipDirection.HORIZONTAL,
                   flipOnTouch: true,
                   front: Container(
-                      height: 200,
-                      margin: EdgeInsets.all(6.0),
-                      padding: EdgeInsets.fromLTRB(6.0, 50.0, 6.0, 50.0),
-                      color: Colors.deepOrange.withOpacity(0.3),
-                      child: Center(child: Text(listCards[index].front))),
+                    height: 200,
+                    margin: EdgeInsets.all(6.0),
+                    padding: EdgeInsets.fromLTRB(6.0, 50.0, 6.0, 50.0),
+                    color: Colors.deepOrange.withOpacity(0.3),
+                    child: Center(
+                      child: Text(cardsMemoryGame[index].termo),
+                    ),
+                  ),
                   back: Container(
                     height: 200,
                     margin: EdgeInsets.all(6.0),
@@ -143,7 +153,7 @@ class _TrainingPageState extends State<TrainingPage> {
                     ),
                   ),
                 ),
-                itemCount: listCards.length,
+                itemCount: cardsMemoryGame.length,
               )
             ],
           ),
