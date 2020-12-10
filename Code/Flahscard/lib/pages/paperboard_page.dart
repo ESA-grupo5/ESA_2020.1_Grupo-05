@@ -5,6 +5,7 @@ import 'package:Flahscard/models/topic.dart';
 import 'package:Flahscard/pages/separate_paperboards_page.dart';
 import 'package:Flahscard/pages/tests_page.dart';
 import 'package:Flahscard/style/colors.dart';
+import 'package:Flahscard/pages/training_page.dart';
 import 'package:Flahscard/widgets/buttons/MoreOptionsButton.dart';
 import 'package:Flahscard/widgets/pop-ups/AddEditCard.dart';
 import 'package:Flahscard/widgets/pop-ups/AddEditTopic.dart';
@@ -217,7 +218,15 @@ class _PaperboardPageState extends State<PaperboardPage> {
                               "Treino",
                               EvaIcons.pieChartOutline,
                               (cartas.data.length > 1)
-                                  ? () {}
+                                  ? () {
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  TrainingPage(
+                                                    listCards: cartas.data,
+                                                    color: _assunto.color,
+                                                  )));
+                                    }
                                   : () {
                                       Scaffold.of(context).showSnackBar(
                                           _buidSnackBar(cartas.data.length));
