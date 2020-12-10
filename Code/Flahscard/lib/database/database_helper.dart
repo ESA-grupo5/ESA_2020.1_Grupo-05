@@ -38,7 +38,7 @@ class DatabaseHelper {
       'CREATE TABLE topics (id INTEGER PRIMARY KEY AUTOINCREMENT, subjectId INTEGER, name TEXT, color TEXT)',
     );
     await db.execute(
-      'CREATE TABLE paperboards (id INTEGER PRIMARY KEY AUTOINCREMENT, topicId INTEGER, front TEXT, back TEXT)',
+      'CREATE TABLE paperboards (id INTEGER PRIMARY KEY AUTOINCREMENT, topicId INTEGER, front TEXT, back TEXT, alreadyLearned INTEGER)',
     );
   }
 }
