@@ -1,5 +1,7 @@
 import 'package:Flahscard/database/controllers/paperboards_ctr.dart';
+import 'package:Flahscard/database/controllers/subjects_ctr.dart';
 import 'package:Flahscard/database/database_helper.dart';
+import 'package:Flahscard/models/subject.dart';
 import 'package:Flahscard/models/topic.dart';
 
 import 'dart:async';
@@ -62,6 +64,14 @@ class TopicsCtr {
     });
 
     return topics;
+  }
+
+  Future<int> getTopicsByUser(int subjectId) async {
+    var dbClient = await con.db;
+    SubjectsCtr _subjects = SubjectsCtr();
+    List<Subject> subjects = await _subjects.getAllSubjects();
+    final List<Topic> topics = [];
+    for (int i = 0; i < subjects.length; i++) {}
   }
 
   Future<List<Topic>> getAllTopicsByName(String name) async {

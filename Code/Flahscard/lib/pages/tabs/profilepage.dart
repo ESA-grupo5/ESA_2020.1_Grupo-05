@@ -1,6 +1,10 @@
 import 'package:Flahscard/constants.dart';
+import 'package:Flahscard/database/controllers/paperboards_ctr.dart';
+import 'package:Flahscard/database/controllers/subjects_ctr.dart';
+import 'package:Flahscard/database/controllers/topics_ctr.dart';
 import 'package:Flahscard/database/controllers/users_ctr.dart';
 import 'package:Flahscard/functions/account.dart';
+import 'package:Flahscard/models/subject.dart';
 import 'package:Flahscard/models/user.dart';
 import 'package:Flahscard/pages/welcome_page.dart';
 import 'package:Flahscard/style/colors.dart';
@@ -17,6 +21,9 @@ class Profilepage extends StatefulWidget {
 class _ProfilepageState extends State<Profilepage> {
   User _user = User();
   LoginCtr _controller = LoginCtr();
+  SubjectsCtr _subjectsCtr = SubjectsCtr();
+  TopicsCtr _topicsCtr = TopicsCtr();
+  PaperboardsCtr _paperboardsCtr = PaperboardsCtr();
 
   @override
   initState() {
@@ -198,15 +205,21 @@ class _ProfilepageState extends State<Profilepage> {
             ),
             child: Row(
               children: <Widget>[
-                Expanded(
-                  child: Text(
-                    '0\nMatérias\ncriadas',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.quicksand().copyWith(
-                      color: Colors.grey[800],
-                      fontSize: 16,
-                    ),
-                  ),
+                FutureBuilder(
+                  future: _subjectsCtr.getAllSubjects(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Container();
+                    return Expanded(
+                      child: Text(
+                        '${snapshot.data.length}\nMatérias\ncriadas',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.quicksand().copyWith(
+                          color: Colors.grey[800],
+                          fontSize: 16,
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 Expanded(
                   child: Text(

@@ -236,7 +236,7 @@ class _PaperboardPageState extends State<PaperboardPage> {
                             break;
                           case 1:
                             return _buildOptionButton(
-                              "Cartas",
+                              "Separar Cartas",
                               EvaIcons.copyOutline,
                               (cartas.data.length > 1)
                                   ? () {
