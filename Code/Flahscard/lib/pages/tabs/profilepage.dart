@@ -4,7 +4,6 @@ import 'package:Flahscard/database/controllers/subjects_ctr.dart';
 import 'package:Flahscard/database/controllers/topics_ctr.dart';
 import 'package:Flahscard/database/controllers/users_ctr.dart';
 import 'package:Flahscard/functions/account.dart';
-import 'package:Flahscard/models/subject.dart';
 import 'package:Flahscard/models/user.dart';
 import 'package:Flahscard/pages/welcome_page.dart';
 import 'package:Flahscard/style/colors.dart';
@@ -190,10 +189,10 @@ class _ProfilepageState extends State<Profilepage> {
         ),
         Center(
           child: Container(
-            width: 343,
+            width: MediaQuery.of(context).size.width,
             height: 125,
-            margin: EdgeInsets.all(20),
-            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.all(16),
+            padding: EdgeInsets.all(32),
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -204,12 +203,13 @@ class _ProfilepageState extends State<Profilepage> {
               ],
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 FutureBuilder(
                   future: _subjectsCtr.getAllSubjects(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return Container();
-                    return Expanded(
+                    return Flexible(
                       child: Text(
                         '${snapshot.data.length}\nMatérias\ncriadas',
                         textAlign: TextAlign.center,
@@ -221,72 +221,39 @@ class _ProfilepageState extends State<Profilepage> {
                     );
                   },
                 ),
-                Expanded(
-                  child: Text(
-                    '0\nAssuntos\ncriados',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.quicksand().copyWith(
-                      color: Colors.grey[800],
-                      fontSize: 16,
-                    ),
-                  ),
+                FutureBuilder(
+                  future: _topicsCtr.getTopicsByUser(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Container();
+                    return Flexible(
+                      child: Text(
+                        '${snapshot.data.length}\nAssuntos\ncriados',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.quicksand().copyWith(
+                          color: Colors.grey[800],
+                          fontSize: 16,
+                        ),
+                      ),
+                    );
+                  },
                 ),
-                Expanded(
-                  child: Text(
-                    '0\nCartões\ncriados',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.quicksand().copyWith(
-                      color: Colors.grey[800],
-                      fontSize: 16,
-                    ),
-                  ),
+                FutureBuilder(
+                  future: _paperboardsCtr.getPaperboardsByUser(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Container();
+                    return Flexible(
+                      child: Text(
+                        '${snapshot.data.length}\nCartões\ncriados',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.quicksand().copyWith(
+                          color: Colors.grey[800],
+                          fontSize: 16,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
-            ),
-          ),
-        ),
-        DefaultTabController(
-          length: 3,
-          child: Container(
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: TabBar(
-                tabs: [
-                  Tab(
-                    child: Text(
-                      "Matérias",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.quicksand().copyWith(
-                        color: Colors.grey[800],
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      "Assuntos",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.quicksand().copyWith(
-                        color: Colors.grey[800],
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      "Cartões",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.quicksand().copyWith(
-                        color: Colors.grey[800],
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ),

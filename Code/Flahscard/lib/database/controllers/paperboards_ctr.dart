@@ -1,7 +1,10 @@
+import 'package:Flahscard/database/controllers/topics_ctr.dart';
 import 'package:Flahscard/database/database_helper.dart';
 import 'package:Flahscard/models/paperboard.dart';
 
 import 'dart:async';
+
+import 'package:Flahscard/models/topic.dart';
 
 class PaperboardsCtr {
   DatabaseHelper con = new DatabaseHelper();
@@ -54,5 +57,18 @@ class PaperboardsCtr {
     });
 
     return paperboards;
+  }
+
+  Future<List<Paperboard>> getPaperboardsByUser() async {
+    TopicsCtr _topicCtr = TopicsCtr();
+    List<Topic> topics = await _topicCtr.getTopicsByUser();
+    List<Paperboard> cards = [];
+    for (int i = 0; i < topics.length; i++) {
+      await getAllPaperboards(topics[i].id)
+          .then((value) => value.forEach((element) {
+                cards.add(element);
+              }));
+    }
+    return cards;
   }
 }

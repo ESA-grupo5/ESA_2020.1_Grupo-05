@@ -66,12 +66,17 @@ class TopicsCtr {
     return topics;
   }
 
-  Future<int> getTopicsByUser(int subjectId) async {
-    var dbClient = await con.db;
+  Future<List<Topic>> getTopicsByUser() async {
     SubjectsCtr _subjects = SubjectsCtr();
     List<Subject> subjects = await _subjects.getAllSubjects();
     final List<Topic> topics = [];
-    for (int i = 0; i < subjects.length; i++) {}
+    for (int i = 0; i < subjects.length; i++) {
+      await getAllTopics(subjects[i].id)
+          .then((value) => value.forEach((element) {
+                topics.add(element);
+              }));
+    }
+    return topics;
   }
 
   Future<List<Topic>> getAllTopicsByName(String name) async {
