@@ -8,7 +8,7 @@ FLASHLY é um aplicativo educativo que ajuda você aprender de forma descomplica
 Para acessar o protótipo clique [aqui](https://www.figma.com/file/DFnMQAntPD59uk1sQmnxzg/Flashly?node-id=0%3A1).
 
 ## Instalação
-###Após baixar o apk, que pode ser encontrado na seção "Release". Siga os passos a seguir:
+Após baixar o apk, que pode ser encontrado na seção "Release". Siga os passos a seguir:
 <p>Baixe o APK no seu smartphone android ou emulador</p>
 <p>Abra o aplicativo de configurações</p>
 <p>Digite “fontes desconhecidas” na barra de buscas</p>
