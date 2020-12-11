@@ -76,10 +76,13 @@ class _TrainingPageState extends State<TrainingPage> {
           child: Column(
             children: <Widget>[
               GridView.builder(
+                padding: EdgeInsets.all(8),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
                 ),
                 itemBuilder: (context, index) => FlipCard(
                   key: cardStateKeys[index],
@@ -125,15 +128,27 @@ class _TrainingPageState extends State<TrainingPage> {
                   direction: FlipDirection.HORIZONTAL,
                   flipOnTouch: cardFlips[index],
                   back: Container(
-                      height: 200,
-                      margin: EdgeInsets.all(6.0),
-                      padding: EdgeInsets.fromLTRB(6.0, 50.0, 6.0, 50.0),
-                      color: Colors.deepOrange.withOpacity(0.3),
-                      child: Center(child: Text(data[index]))),
+                    height: 200,
+                    color: Colors.deepOrange.withOpacity(0.3),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              data[index],
+                              textAlign: TextAlign.center,
+                              maxLines: 4,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   front: Container(
                     height: 200,
-                    margin: EdgeInsets.all(6.0),
-                    padding: EdgeInsets.fromLTRB(6.0, 30.0, 6.0, 30.0),
                     color: Colors.deepOrange,
                     child: Center(
                       child: Image.asset(
